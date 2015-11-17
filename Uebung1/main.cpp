@@ -7,7 +7,7 @@ std::vector<std::vector<double> > computeTrainingSin(unsigned int pA)
     std::vector<double> x;
     std::vector<double> t;
     for(unsigned int p = 0; p<pA; p++) {
-        x[p] = ( ((2*p)-1) * M_PI ) / pA - M_PI + 0.01
+        x[p] = ( ((2*p)-1) * M_PI ) / pA - M_PI + 0.01;
         t[p] = sin(x[p]/2);
     }
     value[0] = x;
@@ -21,7 +21,7 @@ std::vector<std::vector<double> > computeTestSin(unsigned int pA)
     std::vector<double> x;
     std::vector<double> t;
     for(unsigned int p = 0; p<pA; p++) {
-        x[p] = (2 * p * M_PI ) / pA - M_PI + 0.01
+        x[p] = (2 * p * M_PI ) / pA - M_PI + 0.01;
         t[p] = sin(x[p]/2);
     }
     value[0] = x;
@@ -35,7 +35,7 @@ std::vector<std::vector<double> > computeTrainingSinc(unsigned int pA)
     std::vector<double> x;
     std::vector<double> t;
     for(unsigned int p = 0; p<pA; p++) {
-        x[p] = ( ((2*p)-1) * M_PI ) / pA - M_PI + 0.01
+        x[p] = ( ((2*p)-1) * M_PI ) / pA - M_PI + 0.01;
         t[p] = sin(x[p]*4)/x[p];
     }
     value[0] = x;
@@ -49,7 +49,7 @@ std::vector<std::vector<double> > computeTestSinc(unsigned int pA)
     std::vector<double> x;
     std::vector<double> t;
     for(unsigned int p = 0; p<pA; p++) {
-        x[p] = (2 * p * M_PI ) / pA - M_PI + 0.01
+        x[p] = (2 * p * M_PI ) / pA - M_PI + 0.01;
         t[p] = sin(x[p]*4)/x[p];
     }
     value[0] = x;
