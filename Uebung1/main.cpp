@@ -5,11 +5,11 @@
 std::vector<std::vector<double> > computeTrainingSin(unsigned int pA)
 {
     std::vector<std::vector<double> > value(2);
-    std::vector<double> x(pA);
-    std::vector<double> t(pA);
+    std::vector<double> x(pA+1);
+    std::vector<double> t(pA+1);
     for(unsigned int p = 1; p<=pA; p++) {
-        x.at(p-1) = ( ((2*p)-1) * M_PI ) / pA - M_PI + 0.01;
-        t.at(p-1) = sin(x.at(p)/2);
+        x.at(p) = ( ((2*(p))-1) * M_PI ) / pA - M_PI + 0.01;
+        t.at(p) = sin(x.at(p)/2);
     }
     value.at(0) = x;
     value.at(1) = t;
@@ -19,11 +19,11 @@ std::vector<std::vector<double> > computeTrainingSin(unsigned int pA)
 std::vector<std::vector<double> > computeTestSin(unsigned int pA)
 {
     std::vector<std::vector<double> > value(2);
-    std::vector<double> x(pA);
-    std::vector<double> t(pA);
+    std::vector<double> x(pA+1);
+    std::vector<double> t(pA+1);
     for(unsigned int p = 1; p<=pA; p++) {
-        x.at(p-1) = (2 * p * M_PI ) / pA - M_PI + 0.01;
-        t.at(p-1) = sin(x.at(p)/2);
+        x.at(p) = (2 * p * M_PI ) / pA - M_PI + 0.01;
+        t.at(p) = sin(x.at(p)/2);
     }
     value.at(0) = x;
     value.at(1) = t;
@@ -33,11 +33,11 @@ std::vector<std::vector<double> > computeTestSin(unsigned int pA)
 std::vector<std::vector<double> > computeTrainingSinc(unsigned int pA)
 {
     std::vector<std::vector<double> > value(2);
-    std::vector<double> x(pA);
-    std::vector<double> t(pA);
+    std::vector<double> x(pA+1);
+    std::vector<double> t(pA+1);
     for(unsigned int p = 1; p<=pA; p++) {
-        x.at(p-1) = ( ((2*p)-1) * M_PI ) / pA - M_PI + 0.01;
-        t.at(p-1) = sin(x.at(p)*4)/x.at(p);
+        x.at(p) = ( ((2*p)-1) * M_PI ) / pA - M_PI + 0.01;
+        t.at(p) = sin(x.at(p)*4)/x.at(p);
     }
     value.at(0) = x;
     value.at(1) = t;
@@ -47,11 +47,11 @@ std::vector<std::vector<double> > computeTrainingSinc(unsigned int pA)
 std::vector<std::vector<double> > computeTestSinc(unsigned int pA)
 {
     std::vector<std::vector<double> > value(2);
-    std::vector<double> x(pA);
-    std::vector<double> t(pA);
+    std::vector<double> x(pA+1);
+    std::vector<double> t(pA+1);
     for(unsigned int p = 1; p<=pA; p++) {
-        x.at(p-1) = (2 * p * M_PI ) / pA - M_PI + 0.01;
-        t.at(p-1) = sin(x.at(p)*4)/x.at(p);
+        x.at(p) = (2 * p * M_PI ) / pA - M_PI + 0.01;
+        t.at(p) = sin(x.at(p)*4)/x.at(p);
     }
     value.at(0) = x;
     value.at(1) = t;
