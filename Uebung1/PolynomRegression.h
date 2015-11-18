@@ -56,7 +56,7 @@ double PolynomRegression::error(void)
 {
     double E = 0;
     for(int p=1; p<=xInE.size(); p++) {
-        E += pow(y(xInE[p])-tInE[p],2);
+        E += pow(y(xInE[p-1])-tInE[p-1],2);
     }
     return E;
 }
@@ -75,11 +75,11 @@ void PolynomRegression::computeAandBandW(void)
     for(unsigned m=1; m<=mE+1; m++) {
         for(unsigned k=1; k<=mE+1; k++) {
             //Wähle Element a_km
-            elementAE = &AE.operator()(k,m);
+            elementAE = &AE.operator()(m,k);
             *elementAE = 0;
             for(int p=1; p<=xInE.size(); ++p) {
                 //x_p^k+m
-                *elementAE += pow(xInE[p], k+m);                
+                *elementAE += pow(xInE[p-1], k+m);                
             }
 		}
     }
@@ -90,7 +90,7 @@ void PolynomRegression::computeAandBandW(void)
         *elementbE = 0;
         for(int p=1; p<=xInE.size(); ++p) {
             //t_p*x_p^k
-            *elementbE += tInE[p] * pow(xInE[p], k);                
+            *elementbE += tInE[p-1] * pow(xInE[p-1], k);                
         }
 	}
 
