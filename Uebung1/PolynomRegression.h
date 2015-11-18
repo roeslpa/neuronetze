@@ -45,7 +45,11 @@ void PolynomRegression::setXandT(std::vector<double> xA, std::vector<double> tA)
 
 double PolynomRegression::y(double xA)
 {
-    return 2.5;
+    double y = 0;
+    for(unsigned m=0; m<=mE; m++) {
+        y += *(&wE.operator()(m+1,1)) * (pow(xA,m));
+    }
+    return y;
 }
 
 double PolynomRegression::error(void)
