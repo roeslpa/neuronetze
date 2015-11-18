@@ -28,8 +28,7 @@ private:
 
 PolynomRegression::PolynomRegression(unsigned int mA)
 {
-    //(...) TODO 1
-    //xInE = new std::std::vector<double>;
+    //Initialisieren von A, b, w und der Modellkomplexität M
     mE = mA;
     AE = *(new knn::matrix(mA+1, mA+1, 0));
     bE = *(new knn::matrix(mA+1, 1, 0));
@@ -45,8 +44,11 @@ void PolynomRegression::setXandT(std::vector<double> xA, std::vector<double> tA)
 
 double PolynomRegression::y(double xA)
 {
-    double y = 0;
-    for(unsigned m=0; m<=mE; m++) {
+    double y;
+    //Berechne y(w,x) = Summe von m=0 bis M von w_m*x^m
+    for(unsigned m=0; m<=mE; m++) 
+    {
+    	//w_m*x^m
         y += wE(m+1,1) * (pow(xA,m));
     }
     return y;
@@ -55,41 +57,37 @@ double PolynomRegression::y(double xA)
 double PolynomRegression::error(void)
 {
     double E = 0;
+    //Berechne Error(w)
     for(int p=1; p<=xInE.size(); p++) {
-        E += pow(y(xInE[p-1])-tInE[p-1],2);
+    	//(y(w,x_p)-t_p)^2
+        E += pow((y(xInE[p-1])-tInE[p-1]),2);
     }
     return E;
 }
 
 void PolynomRegression::computeAandBandW(void)
 {
-    double* elementAE;
-    double* elementbE;
-    double* elementwE;
-
-    //double elementwE;
-	//a_km berechnen
-    for(unsigned m=1; m<=mE+1; m++) {
-        for(unsigned k=1; k<=mE+1; k++) {
-            //Wähle Element a_km
+    //a_km berechnen
+    for(unsigned m=0; m<=mE; m++) {
+        for(unsigned k=0; k<=mE; k++) {
             for(int p=1; p<=xInE.size(); ++p) {
                 //x_p^k+m
-                AE(m,k) += pow(xInE[p-1], k+m);
+                AE(m+1,k+1) += pow(xInE[p-1], k+m);
             }
 		}
     }
     //b_k berechnen
-    for(int k=1; k<=mE+1; k++) {
-        //Wähle Element b_k
+    for(unsigned k=0; k<=mE; k++) {
         for(int p=1; p<=xInE.size(); ++p) {
             //t_p*x_p^k
-            bE(k,1) += tInE[p-1] * pow(xInE[p-1], k);                
+            bE(k+1,1) += tInE[p-1] * pow(xInE[p-1], k);                
         }
 	}
 
     //A^-1 berechnen
     AE.invert();
-
+    
+	//w berechnen als A^-1*b
     wE = AE * bE;
 
     //A berechnen
