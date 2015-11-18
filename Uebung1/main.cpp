@@ -1,64 +1,66 @@
 #include "matrix.h"
 #include "PolynomRegression.h"
+#include <iostream>
 
 std::vector<std::vector<double> > computeTrainingSin(unsigned int pA)
 {
-    std::vector<std::vector<double> > value;
-    std::vector<double> x;
-    std::vector<double> t;
+    std::vector<std::vector<double> > value(2);
+    std::vector<double> x(pA);
+    std::vector<double> t(pA);
     for(unsigned int p = 0; p<pA; p++) {
-        x[p] = ( ((2*p)-1) * M_PI ) / pA - M_PI + 0.01;
-        t[p] = sin(x[p]/2);
+        x.at(p) = ( ((2*p)-1) * M_PI ) / pA - M_PI + 0.01;
+        t.at(p) = sin(x.at(p)/2);
     }
-    value[0] = x;
-    value[1] = t;
+    value.at(0) = x;
+    value.at(1) = t;
     return value;
 }
 
 std::vector<std::vector<double> > computeTestSin(unsigned int pA)
 {
-    std::vector<std::vector<double> > value;
-    std::vector<double> x;
-    std::vector<double> t;
+    std::vector<std::vector<double> > value(2);
+    std::vector<double> x(pA);
+    std::vector<double> t(pA);
     for(unsigned int p = 0; p<pA; p++) {
-        x[p] = (2 * p * M_PI ) / pA - M_PI + 0.01;
-        t[p] = sin(x[p]/2);
+        x.at(p) = (2 * p * M_PI ) / pA - M_PI + 0.01;
+        t.at(p) = sin(x.at(p)/2);
     }
-    value[0] = x;
-    value[1] = t;
+    value.at(0) = x;
+    value.at(1) = t;
     return value;
 }
 
 std::vector<std::vector<double> > computeTrainingSinc(unsigned int pA)
 {
-    std::vector<std::vector<double> > value;
-    std::vector<double> x;
-    std::vector<double> t;
+    std::vector<std::vector<double> > value(2);
+    std::vector<double> x(pA);
+    std::vector<double> t(pA);
     for(unsigned int p = 0; p<pA; p++) {
-        x[p] = ( ((2*p)-1) * M_PI ) / pA - M_PI + 0.01;
-        t[p] = sin(x[p]*4)/x[p];
+        x.at(p) = ( ((2*p)-1) * M_PI ) / pA - M_PI + 0.01;
+        t.at(p) = sin(x.at(p)*4)/x.at(p);
     }
-    value[0] = x;
-    value[1] = t;
+    value.at(0) = x;
+    value.at(1) = t;
     return value;
 }
 
 std::vector<std::vector<double> > computeTestSinc(unsigned int pA)
 {
-    std::vector<std::vector<double> > value;
-    std::vector<double> x;
-    std::vector<double> t;
+    std::vector<std::vector<double> > value(2);
+    std::vector<double> x(pA);
+    std::vector<double> t(pA);
     for(unsigned int p = 0; p<pA; p++) {
-        x[p] = (2 * p * M_PI ) / pA - M_PI + 0.01;
-        t[p] = sin(x[p]*4)/x[p];
+        x.at(p) = (2 * p * M_PI ) / pA - M_PI + 0.01;
+        t.at(p) = sin(x.at(p)*4)/x.at(p);
     }
-    value[0] = x;
-    value[1] = t;
+    value.at(0) = x;
+    value.at(1) = t;
     return value;
 }
 
 
 int main(int argc, char** argv) {
+    
     knn::init();
 
     //number of training examples: parameter 1, if given, else 11
@@ -70,7 +72,6 @@ int main(int argc, char** argv) {
     sinOutL.open("SinError.txt",std::ios::out);
     std::ofstream sincOutL;
     sincOutL.open("SincError.txt",std::ios::out);
-
 
     for (unsigned int mL=0;mL<=MMax;++mL)
     {
