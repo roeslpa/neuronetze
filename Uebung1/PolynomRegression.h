@@ -47,7 +47,7 @@ double PolynomRegression::y(double xA)
 {
     double y = 0;
     for(unsigned m=0; m<=mE; m++) {
-        y += *(&wE.operator()(m+1,1)) * (pow(xA,m));
+        y += wE(m+1,1) * (pow(xA,m));
     }
     return y;
 }
@@ -66,46 +66,31 @@ void PolynomRegression::computeAandBandW(void)
     double* elementAE;
     double* elementbE;
     double* elementwE;
-    double* aIK;
-    double* aKK;
-    double* aIJ;
-    double* aKJ;
+
     //double elementwE;
 	//a_km berechnen
     for(unsigned m=1; m<=mE+1; m++) {
         for(unsigned k=1; k<=mE+1; k++) {
             //Wähle Element a_km
-            elementAE = &AE.operator()(m,k);
-            *elementAE = 0;
             for(int p=1; p<=xInE.size(); ++p) {
                 //x_p^k+m
-                *elementAE += pow(xInE[p-1], k+m);                
+                AE(m,k) += pow(xInE[p-1], k+m);
             }
 		}
     }
     //b_k berechnen
     for(int k=1; k<=mE+1; k++) {
         //Wähle Element b_k
-        elementbE = &bE.operator()(k,1);
-        *elementbE = 0;
         for(int p=1; p<=xInE.size(); ++p) {
             //t_p*x_p^k
-            *elementbE += tInE[p-1] * pow(xInE[p-1], k);                
+            bE(k,1) += tInE[p-1] * pow(xInE[p-1], k);                
         }
 	}
 
     //A^-1 berechnen
     AE.invert();
 
-    //w = A^-1 * b
-    for(int j=1; j<=mE+1; j++) {
-        elementwE = &wE.operator()(j,1);
-        for(int i=1; i<=mE+1; i++) {
-            elementAE = &AE.operator()(j,i);
-            elementbE = &bE.operator()(i,1);
-            *elementwE += (*elementAE) * (*elementbE);
-        }
-    }
+    wE = AE * bE;
 
     //A berechnen
     AE.invert();
