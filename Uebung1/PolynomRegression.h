@@ -50,7 +50,11 @@ double PolynomRegression::y(double xA)
 
 double PolynomRegression::error(void)
 {
-    return 3.4;
+    double E = 0;
+    for(int p=1; p<=xInE.size(); p++) {
+        E += pow(y(xInE[p])-tInE[p],2);
+    }
+    return E;
 }
 
 void PolynomRegression::computeAandBandW(void)
@@ -86,8 +90,10 @@ void PolynomRegression::computeAandBandW(void)
         }
 	}
 
+    //A^-1 berechnen
     AE.invert();
 
+    //w = A^-1 * b
     for(int j=1; j<=mE+1; j++) {
         elementwE = &wE.operator()(j,1);
         for(int i=1; i<=mE+1; i++) {
@@ -96,6 +102,9 @@ void PolynomRegression::computeAandBandW(void)
             *elementwE += (*elementAE) * (*elementbE);
         }
     }
+
+    //A berechnen
+    AE.invert();
 }
 
 #endif KNN1_POLYNOMREGRESSION_H
