@@ -42,12 +42,12 @@ ProbabilityDistribution::ProbabilityDistribution(unsigned int nA,unsigned int no
 	yMaxE = yMaxA;
 	deltaE = deltaA;
 
-	meanValuesE = new knn::matrix(noMeansE, 2, 0.0);
-	nuE = new knn::matrix(1, 2, 0);
-	sigmaE = new knn::matrix(1, 2, 0);
-	histogramE = new knn::matrix(, , 0);
+	meanValuesE = knn::matrix(noMeansE, 2, 0.0);
+	nuE = knn::matrix(1, 2, 0);
+	sigmaE = knn::matrix(1, 2, 0);
+	histogramE = knn::matrix(10 * (xMaxE-xMinE), 10 * (yMaxE-yMinE), 0.0);
 
-	std::srand(std::time(0));
+	knn::init();
 }
 
 void ProbabilityDistribution::execute(void)
@@ -59,33 +59,27 @@ void ProbabilityDistribution::execute(void)
 
 void ProbabilityDistribution::generateMeanValues(void)
 {
-	double max4 = ;
-	double max2 = 2.0/RAND_MAX;
-	knn::matrix random = new knn::matrix(1, 2, 0.0);
+	knn::matrix randomX1 = knn::matrix(nE, 1, 0.0);
+	knn::matrix randomX2 = knn::matrix(nE, 1, 0.0);
 
 	//Berechne Zufallsvariablen
 	for(unsigned i=1; i<=noMeansE; i++) {
 		//Berechne eine Zufallsvariable
-		for(unsigned n=0; n<nE; n++) {
-			randomVector(random);
-			meanValuesE(i, 1) += random(1, 1);
-			meanValuesE(i, 2) += random(1, 2);
+		randomX1.fillRandom(-1,1);
+		randomX2.fillRandom(-3,1);
+		for(unsigned n=1; n<=nE; n++) {
+			meanValuesE(i, 1) += randomX1(n, 1);
+			meanValuesE(i, 2) += randomX2(n, 1);
 		}
 		meanValuesE(i, 1) /= nE;
 		meanValuesE(i, 2) /= nE;
 	}
 }
 
-void ProbabilityDistribution::randomVector(knn::matrix vector) {
-	//Berechne einen Zufallsvektor: [-1,1]x[-3,1]
-	vector(1, 1) = std::rand()/RAND_MAX*2.0 - 1;
-	vector(1, 2) = std::rand()/RAND_MAX*4.0 - 3;
-}
-
 void ProbabilityDistribution::estimateMeanAndVariance(void)
 {
 	//Schätze Erwartungswert
-	for(unsigned p=1; p<=noMeansE; i++) {
+	for(unsigned p=1; p<=noMeansE; p++) {
 		nuE(1, 1) += meanValuesE(p, 1);
 		nuE(1, 2) += meanValuesE(p, 2);
 	}
@@ -93,7 +87,7 @@ void ProbabilityDistribution::estimateMeanAndVariance(void)
 	nuE(1, 2) /= noMeansE;
 	
 	//Schätze Standardabweichung
-	for(unsigned p=1; p<=noMeansE; i++) {
+	for(unsigned p=1; p<=noMeansE; p++) {
 		sigmaE(1, 1) += pow(meanValuesE(p, 1)-nuE(1, 1),2);
 		sigmaE(1, 2) += pow(meanValuesE(p, 2)-nuE(1, 2),2);
 	}
@@ -103,6 +97,22 @@ void ProbabilityDistribution::estimateMeanAndVariance(void)
 
 void ProbabilityDistribution::createHistogram(void)
 {
-	(...)
+	unsigned x, y;
+	for(unsigned i=1; i<=noMeansE; i++) {
+		//Diskretisieren
+		x = (meanValuesE(i, 1)+1)*10+1;
+		y = (meanValuesE(i, 2)+3)*10+1;
+
+		histogramE(x,y) += 1;
+	}
+
+	//Pausibilitätscheck
+	/*for(y=1; y<=10 * (yMaxE-yMinE); y++) {
+		for(x=1; x<=10 * (xMaxE-xMinE); x++) {
+			histogramE(x,y) /= noMeansE*0.01;
+			printf("%lf ", histogramE(x,y));
+		}
+		printf("\n");
+	}*/
 }
 #endif // KNN1_ProbabilityDistribution_H
