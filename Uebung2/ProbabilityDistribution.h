@@ -93,10 +93,13 @@ void ProbabilityDistribution::estimateMeanAndVariance(void)
 	//Schätze Standardabweichung
 	for(unsigned p=1; p<=noMeansE; p++) {
 		sigmaE(1, 1) += pow(meanValuesE(p, 1)-nuE(1, 1),2);
-		sigmaE(1, 2) += pow(meanValuesE(p, 2)-nuE(1, 2),2);
+		sigmaE(1, 2) += pow(meanValuesE(p, 2)-nuE(1, 2),2);		
 	}
-	sigmaE(1, 1) /= noMeansE-1;
+	sigmaE(1, 1) /= noMeansE-1; //warum -1?
 	sigmaE(1, 2) /= noMeansE-1;
+	//Ist das nicht nur die Varianz?
+	//sigmaE(1,1) = pow(sigma(1,1),0.5);
+	//sigmaE(1,2) = pow(sigma(1,2),0.5);
 }
 
 void ProbabilityDistribution::createHistogram(void)
@@ -116,7 +119,7 @@ void ProbabilityDistribution::createHistogram(void)
 	for(unsigned x=1; x<=(xMaxE-xMinE)/deltaE; x++) {
 		x1 = (x-1)*deltaE-1+(deltaE/2);
 		for(unsigned y=1; y<=(yMaxE-yMinE)/deltaE; y++) {
-			histogramE(x,y) /= noMeansE * pow(deltaE,2);
+			histogramE(x,y) /= noMeansE * pow(deltaE,2); 
 			x2 = (y-1)*deltaE-3+(deltaE/2);
 			normVertE(x,y) = zweiPiSigma * exp( ((-1.0)/2.0) * ( (pow(x1-nuE(1,1),2)/pow(sigmaE(1,1),2)) + (pow(x2-nuE(1,2),2)/pow(sigmaE(1,2),2)) ));
 		}
