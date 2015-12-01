@@ -6,6 +6,7 @@
 #include <sstream>
 #include <vector>
 #include "matrix.h"
+#include <math.h>
 
 using namespace std;
 
@@ -19,12 +20,13 @@ private:
 
 	unsigned int nE;
 	unsigned int noMeansE;
-	double xMinE, xMaxE, yMinE, yMaxE, deltaE;
+	double xMinE, xMaxE, yMinE, yMaxE, deltaE, errorE;
 
 	knn::matrix meanValuesE;
 	knn::matrix nuE;
 	knn::matrix sigmaE;
 	knn::matrix histogramE;
+	knn::matrix normVertE;
 
 	void generateMeanValues(void);
 	void estimateMeanAndVariance(void);
@@ -45,7 +47,9 @@ ProbabilityDistribution::ProbabilityDistribution(unsigned int nA,unsigned int no
 	meanValuesE = knn::matrix(noMeansE, 2, 0.0);
 	nuE = knn::matrix(1, 2, 0);
 	sigmaE = knn::matrix(1, 2, 0);
-	histogramE = knn::matrix(10 * (xMaxE-xMinE), 10 * (yMaxE-yMinE), 0.0);
+	histogramE = knn::matrix((xMaxE-xMinE)/deltaE, (yMaxE-yMinE)/deltaE, 0.0);
+	normVertE = knn::matrix((xMaxE-xMinE)/deltaE, (yMaxE-yMinE)/deltaE, 0.0);
+	errorE = 0.0;
 
 	knn::init();
 }
@@ -98,21 +102,47 @@ void ProbabilityDistribution::estimateMeanAndVariance(void)
 void ProbabilityDistribution::createHistogram(void)
 {
 	unsigned x, y;
+	double x1, x2, zweiPiSigma;
 	for(unsigned i=1; i<=noMeansE; i++) {
 		//Diskretisieren
-		x = (meanValuesE(i, 1)+1)*10+1;
-		y = (meanValuesE(i, 2)+3)*10+1;
+		x = (meanValuesE(i, 1)+1)/deltaE+1;
+		y = (meanValuesE(i, 2)+3)/deltaE+1;
 
 		histogramE(x,y) += 1;
 	}
 
+	//Normalverteilung berechnen, Histogramm durch S*delta^2
+	zweiPiSigma = 1.0/(2.0*M_PI*sigmaE(1,1)*sigmaE(1,2));
+	for(unsigned x=1; x<=(xMaxE-xMinE)/deltaE; x++) {
+		x1 = (x-1)*deltaE-1+(deltaE/2);
+		for(unsigned y=1; y<=(yMaxE-yMinE)/deltaE; y++) {
+			histogramE(x,y) /= noMeansE * pow(deltaE,2);
+			x2 = (y-1)*deltaE-3+(deltaE/2);
+			normVertE(x,y) = zweiPiSigma * exp( ((-1.0)/2.0) * ( (pow(x1-nuE(1,1),2)/pow(sigmaE(1,1),2)) + (pow(x2-nuE(1,2),2)/pow(sigmaE(1,2),2)) ));
+		}
+	}
+
+	//Error SSE berechnen
+	for(unsigned x=1; x<=(xMaxE-xMinE)/deltaE; x++) {
+		for(unsigned y=1; y<=(yMaxE-yMinE)/deltaE; y++) {
+			errorE += pow(normVertE(x,y)-histogramE(x,y), 2);
+		}
+	}
+
+	printf("Error: %lf\n", errorE);
 	//Pausibilitätscheck
-	/*for(y=1; y<=10 * (yMaxE-yMinE); y++) {
+	for(y=1; y<=10 * (yMaxE-yMinE); y++) {
 		for(x=1; x<=10 * (xMaxE-xMinE); x++) {
-			histogramE(x,y) /= noMeansE*0.01;
+			printf("%lf ", normVertE(x,y));
+		}
+		printf("\n");
+	}
+	printf("\n");
+	for(y=1; y<=10 * (yMaxE-yMinE); y++) {
+		for(x=1; x<=10 * (xMaxE-xMinE); x++) {
 			printf("%lf ", histogramE(x,y));
 		}
 		printf("\n");
-	}*/
+	}
 }
 #endif // KNN1_ProbabilityDistribution_H
