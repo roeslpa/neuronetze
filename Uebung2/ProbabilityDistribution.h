@@ -95,9 +95,9 @@ void ProbabilityDistribution::estimateMeanAndVariance(void)
 		sigmaE(1, 1) += pow(meanValuesE(p, 1)-nuE(1, 1),2);
 		sigmaE(1, 2) += pow(meanValuesE(p, 2)-nuE(1, 2),2);		
 	}
-	sigmaE(1, 1) /= noMeansE-1; //warum -1?
+	sigmaE(1, 1) /= noMeansE-1;
 	sigmaE(1, 2) /= noMeansE-1;
-	//Ist das nicht nur die Varianz?
+	
 	sigmaE(1,1) = pow(sigmaE(1,1),0.5);
 	sigmaE(1,2) = pow(sigmaE(1,2),0.5);
 }
@@ -133,19 +133,5 @@ void ProbabilityDistribution::createHistogram(void)
 	}
 
 	printf("Error: %lf\n", errorE);
-	/*Pausibilitätscheck
-	for(y=1; y<=10 * (yMaxE-yMinE); y++) {
-		for(x=1; x<=10 * (xMaxE-xMinE); x++) {
-			printf("%lf ", normVertE(x,y));
-		}
-		printf("\n");
-	}
-	printf("\n");
-	for(y=1; y<=10 * (yMaxE-yMinE); y++) {
-		for(x=1; x<=10 * (xMaxE-xMinE); x++) {
-			printf("%lf ", histogramE(x,y));
-		}
-		printf("\n");
-	}*/
 }
 #endif // KNN1_ProbabilityDistribution_H
