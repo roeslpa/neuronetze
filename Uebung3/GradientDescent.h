@@ -2,6 +2,8 @@
 #define KNN3_GRADIENT_H
 
 #include "matrix.h"
+#include <math.h>
+#include <float.h>
 
 using namespace std;
 
@@ -48,16 +50,16 @@ double GradientDescent::error(knn::matrix wA)
 knn::matrix GradientDescent::gradient(knn::matrix wA)
 {
 	knn::matrix gradient = knn::matrix(3, 1);
-	gradient(1,1) = 2.0*wA(1,1)/betaE * exp(-((pow(wA(1,1),2)*pow(wA(2,1),2)*pow(wA(3,1),2))/betaE)) + alphaE*sin(wA(1,1))*cos(wA(2,1))*cos(wA(3,1);
-	gradient(2,1) = 2.0*wA(2,1)/betaE * exp(-((pow(wA(1,1),2)*pow(wA(2,1),2)*pow(wA(3,1),2))/betaE)) + alphaE*cos(wA(1,1))*sin(wA(2,1))*cos(wA(3,1);
-	gradient(3,1) = 2.0*wA(3,1)/betaE * exp(-((pow(wA(1,1),2)*pow(wA(2,1),2)*pow(wA(3,1),2))/betaE)) + alphaE*cos(wA(1,1))*cos(wA(2,1))*sin(wA(3,1);
+	gradient(1,1) = 2.0*wA(1,1)/betaE * exp(-((pow(wA(1,1),2)*pow(wA(2,1),2)*pow(wA(3,1),2))/betaE)) + alphaE*sin(wA(1,1))*cos(wA(2,1))*cos(wA(3,1));
+	gradient(2,1) = 2.0*wA(2,1)/betaE * exp(-((pow(wA(1,1),2)*pow(wA(2,1),2)*pow(wA(3,1),2))/betaE)) + alphaE*cos(wA(1,1))*sin(wA(2,1))*cos(wA(3,1));
+	gradient(3,1) = 2.0*wA(3,1)/betaE * exp(-((pow(wA(1,1),2)*pow(wA(2,1),2)*pow(wA(3,1),2))/betaE)) + alphaE*cos(wA(1,1))*cos(wA(2,1))*sin(wA(3,1));
 	return gradient;
 }
 
 //help-function calculate the change for gradientDescent
 double GradientDescent::calculateChange(knn::matrix wInitOldA, knn::matrix wInitCurrentA)
 {
-	(...)
+	return error(wInitOldA)-error(wInitCurrentA);
 }
 
 //c) 
@@ -66,17 +68,20 @@ knn::matrix GradientDescent::gradientDescent(knn::matrix wInitA)
 	double errorStartL = error(wInitA);
 	knn::matrix wInitCurrentL = wInitA;
 	unsigned int counterL = 0;
-	(...)
+	knn::matrix wRecentL = wInitA;
 
-	while (...)
+	while (calculateChange(wInitCurrentL,wRecentL) >= 0)
 	{
-		(...)
+		wInitCurrentL = wRecentL;
+		wRecentL(1,1) -= etaE;
+		wRecentL(2,1) -= etaE;
+		wRecentL(3,1) -= etaE;
 		++counterL;
 	}
 
 	double errorEndL = error(wInitCurrentL);
 
-	if (!isnan(errorEndL) && (errorEndL<minErrorE))
+	if (!std::isnan(errorEndL) && (errorEndL<minErrorE))
 	{
 		minErrorE = errorEndL;
 		minErrorWE = wInitCurrentL;
@@ -94,11 +99,20 @@ knn::matrix GradientDescent::gradientDescent(knn::matrix wInitA)
 //d)
 void GradientDescent::executeD(unsigned int noInitVecsA)
 {
+	knn::matrix randomW = knn::matrix(3,1);
+	knn::matrix minErrorW;
+	double minError;
 	std::cout << "run started for eta: " << etaE << std::endl;
 	for (unsigned int kL = 0; kL<noInitVecsA; ++kL)
 	{
 		std::cout << "start iteration: " << kL+1 << std::endl << std::endl;
-		(...)
+		randomW.fillRandom(-10,10);
+		minErrorW = gradientDescent(randomW);
+		minError = error(minErrorW);
+		if(minError < minErrorE) {
+			minErrorE = minError;
+			minErrorWE = minErrorW;
+		}
 	}
 	std::cout << "run finished for eta: " << etaE << std::endl << std::endl;
 	std::cout << "min error: " << minErrorE << " at: (" << minErrorWE(1, 1) << "," << minErrorWE(2, 1) << "," << minErrorWE(3, 1) << ") " << std::endl << std::endl;
@@ -107,12 +121,12 @@ void GradientDescent::executeD(unsigned int noInitVecsA)
 //e) 1
 void GradientDescent::executeE1(void)
 {
-	(...)
+	//(...)
 }
 
 //e) 2
 void GradientDescent::executeE2(void)
 {
-	(...)
+	//(...)
 }
 #endif // KNN3_GRADIENT_H
