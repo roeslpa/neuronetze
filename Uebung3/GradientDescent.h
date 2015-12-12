@@ -41,13 +41,17 @@ GradientDescent::GradientDescent(double etaA, double alphaA, double betaA, doubl
 //b) error function
 double GradientDescent::error(knn::matrix wA)
 {
-	(...)
+	return 1.0 - exp(-((pow(wA(1,1),2)*pow(wA(2,1),2)*pow(wA(3,1),2))/betaE)) - alphaE*(cos(wA(1,1))*cos(wA(2,1))*cos(wA(3,1))-1.0);
 }
 
 //b) gradient function
 knn::matrix GradientDescent::gradient(knn::matrix wA)
 {
-	(...)
+	knn::matrix gradient = knn::matrix(3, 1);
+	gradient(1,1) = 2.0*wA(1,1)/betaE * exp(-((pow(wA(1,1),2)*pow(wA(2,1),2)*pow(wA(3,1),2))/betaE)) + alphaE*sin(wA(1,1))*cos(wA(2,1))*cos(wA(3,1);
+	gradient(2,1) = 2.0*wA(2,1)/betaE * exp(-((pow(wA(1,1),2)*pow(wA(2,1),2)*pow(wA(3,1),2))/betaE)) + alphaE*cos(wA(1,1))*sin(wA(2,1))*cos(wA(3,1);
+	gradient(3,1) = 2.0*wA(3,1)/betaE * exp(-((pow(wA(1,1),2)*pow(wA(2,1),2)*pow(wA(3,1),2))/betaE)) + alphaE*cos(wA(1,1))*cos(wA(2,1))*sin(wA(3,1);
+	return gradient;
 }
 
 //help-function calculate the change for gradientDescent
