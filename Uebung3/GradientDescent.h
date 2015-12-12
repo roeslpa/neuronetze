@@ -106,7 +106,7 @@ void GradientDescent::executeD(unsigned int noInitVecsA)
 	for (unsigned int kL = 0; kL<noInitVecsA; ++kL)
 	{
 		std::cout << "start iteration: " << kL+1 << std::endl << std::endl;
-		randomW.fillRandom(-10,10);
+		randomW.fillRandom(-rangeE,rangeE);
 		minErrorW = gradientDescent(randomW);
 		minError = error(minErrorW);
 		if(minError < minErrorE) {
@@ -121,12 +121,17 @@ void GradientDescent::executeD(unsigned int noInitVecsA)
 //e) 1
 void GradientDescent::executeE1(void)
 {
-	//(...)
+	knn::matrix w = knn::matrix(3,1);
+	knn::matrix minErrorW = gradientDescent(w);
+	double minError = error(minErrorW);
 }
 
 //e) 2
 void GradientDescent::executeE2(void)
 {
-	//(...)
+	knn::matrix w = knn::matrix(3,1,1);
+	w(3,1) = 0;
+	knn::matrix minErrorW = gradientDescent(w);
+	double minError = error(minErrorW);
 }
 #endif // KNN3_GRADIENT_H
