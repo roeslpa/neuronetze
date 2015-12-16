@@ -77,7 +77,7 @@ knn::matrix GradientDescent::gradientDescent(knn::matrix wInitA)
 	wInitCurrentL(2,1) += (-etaE*gradient(wInitCurrentL)(2,1));
 	wInitCurrentL(3,1) += (-etaE*gradient(wInitCurrentL)(3,1));
 
-	while((error(wRecentL)-error(wInitCurrentL))> 0.00000000001) //Bei Divergenz wird diese Differenz negativ. Bei Konvergenz wird sie immer kleiner.
+	while(error(wRecentL)>error(wInitCurrentL) && counterL<10000) //Bei Divergenz wird diese Differenz negativ. Bei Konvergenz wird sie immer kleiner.
 	{
 		wRecentL = wInitCurrentL;
 		//w_neu=w_alt+DeltaW
@@ -152,7 +152,7 @@ void GradientDescent::executeE1(void)
 	knn::matrix minErrorW = gradientDescent(w);
 	double minError = error(minErrorW);
 	GradientDescent::berechneHessematrix(minErrorW);
-	std::cout << "Wenn w ein Minimum ist, muss gelten, dass die Hessematrix an der Stelle w positiv definit ist. Da die Hessematrix symmetrisch ist, ist die Matrix positiv definit, wenn alle Elemente der Diagonalen (H_11, H_22, H_33) größer als Null sind. Dies ist jedoch nicht der Fall und somit wurde kein Minimum gefunden." << std::endl;
+	std::cout << "Wenn w ein Minimum ist, muss gelten, dass die Hessematrix an der Stelle w positiv definit ist. Da die Hessematrix symmetrisch ist, ist die Matrix positiv definit, wenn alle Elemente der Diagonalen (H_11, H_22, H_33) größer als Null sind. Dies ist jedoch nicht der Fall und somit wurde kein Minimum gefunden. Grund dafür ist das Verhältnis von alpha und beta (s.3.2.a)." << std::endl;
 }
 
 //e) 2
@@ -164,5 +164,7 @@ void GradientDescent::executeE2(void)
 	double minError = error(minErrorW);
 	GradientDescent::berechneHessematrix(minErrorW);
 	std::cout << "Wenn w ein Minimum ist, muss gelten, dass die Hessematrix an der Stelle w positiv definit ist. Da die Hessematrix symmetrisch ist, ist die Matrix positiv definit, wenn alle Elemente der Diagonalen (H_11, H_22, H_33) größer als Null sind. Dies ist hier gegeben und somit wurde ein Minimum gefunden." << std::endl;
+
+	std::cout << "\nd) Für alle eta werden zufällige w gefunden, für die das Verfahren konvergiert. Allerdings fällt bei eta=4 auf, dass die Laufzeit ohne Abbruch Bedingung für das Konvergieren sehr hoch ist und der Fehler dann nich in der Nähe von 0 sondern von 1 liegt."<< std::endl;
 }
 #endif // KNN3_GRADIENT_H
