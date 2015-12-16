@@ -70,15 +70,16 @@ knn::matrix GradientDescent::gradientDescent(knn::matrix wInitA)
 	unsigned int counterL = 0;
 	knn::matrix wRecentL = wInitA;
 
-	while (calculateChange(wInitCurrentL,wRecentL) >= 0)
+	while (calculateChange(wRecentL,wInitCurrentL) >= 0 && (wInitCurrentL(1,1)=>-10) && (wInitCurrentL(2,1)=>-10) && (wInitCurrentL(3,1)=>-10) && (wInitCurrentL(1,1)=<10) && (wInitCurrentL(2,1)=<10) && (wInitCurrentL(3,1)=<10))
 	{
-		wInitCurrentL = wRecentL;
-		wRecentL(1,1) -= etaE;
-		wRecentL(2,1) -= etaE;
-		wRecentL(3,1) -= etaE;
+		wRecentL = wInitCurrentL;
+		//w_neu=w_alt+DeltaW
+		wInitCurrentL(1,1) += (-etaE*gradient(1,1)); 
+		wInitCurrentL(2,1) += (-etaE*gradient(2,1));
+		wInitCurrentL(3,1) += (-etaE*gradient(3,1));
 		++counterL;
 	}
-
+	wInitCurrentL = wRecentL;
 	double errorEndL = error(wInitCurrentL);
 
 	if (!std::isnan(errorEndL) && (errorEndL<minErrorE))
@@ -109,10 +110,6 @@ void GradientDescent::executeD(unsigned int noInitVecsA)
 		randomW.fillRandom(-rangeE,rangeE);
 		minErrorW = gradientDescent(randomW);
 		minError = error(minErrorW);
-		if(minError < minErrorE) {
-			minErrorE = minError;
-			minErrorWE = minErrorW;
-		}
 	}
 	std::cout << "run finished for eta: " << etaE << std::endl << std::endl;
 	std::cout << "min error: " << minErrorE << " at: (" << minErrorWE(1, 1) << "," << minErrorWE(2, 1) << "," << minErrorWE(3, 1) << ") " << std::endl << std::endl;
