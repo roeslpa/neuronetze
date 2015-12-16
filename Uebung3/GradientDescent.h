@@ -59,7 +59,9 @@ knn::matrix GradientDescent::gradient(knn::matrix wA)
 //help-function calculate the change for gradientDescent
 double GradientDescent::calculateChange(knn::matrix wInitOldA, knn::matrix wInitCurrentA)
 {
-	return error(wInitOldA)-error(wInitCurrentA);
+	//Berechnung des Abstands der beiden Vektoren
+	double distance =  pow(pow(wInitOldA(1,1)-wInitCurrentA(1,1),2)+pow(wInitOldA(2,1)-wInitCurrentA(2,1),2)+pow(wInitOldA(2,1)-wInitCurrentA(2,1),2), 0.5);
+	return distance;
 }
 
 //c) 
@@ -69,13 +71,12 @@ knn::matrix GradientDescent::gradientDescent(knn::matrix wInitA)
 	knn::matrix wInitCurrentL = wInitA;
 	unsigned int counterL = 0;
 	knn::matrix wRecentL = wInitA;
-	knn::matrix gradient = ;
 
 	wInitCurrentL(1,1) += (-etaE*gradient(wInitCurrentL)(1,1)); 
 	wInitCurrentL(2,1) += (-etaE*gradient(wInitCurrentL)(2,1));
 	wInitCurrentL(3,1) += (-etaE*gradient(wInitCurrentL)(3,1));
 
-	while((calculateChange(wRecentL,wInitCurrentL) > 0) && (wInitCurrentL(1,1)>=-10) && (wInitCurrentL(2,1)>=-10) && (wInitCurrentL(3,1)>=-10) && (wInitCurrentL(1,1)<=10) && (wInitCurrentL(2,1)<=10) && (wInitCurrentL(3,1)<=10))
+	while((error(wRecentL)-error(wInitCurrentL))> 0.00000000001) //Bei divergenz wird diese Differenz negativ. Bei Konvergenz wird sie immer kleiner.
 	{
 		wRecentL = wInitCurrentL;
 		//w_neu=w_alt+DeltaW
