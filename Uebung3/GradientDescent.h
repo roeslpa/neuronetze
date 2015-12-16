@@ -69,16 +69,22 @@ knn::matrix GradientDescent::gradientDescent(knn::matrix wInitA)
 	knn::matrix wInitCurrentL = wInitA;
 	unsigned int counterL = 0;
 	knn::matrix wRecentL = wInitA;
+	knn::matrix gradient = ;
 
-	while (calculateChange(wRecentL,wInitCurrentL) >= 0 && (wInitCurrentL(1,1)=>-10) && (wInitCurrentL(2,1)=>-10) && (wInitCurrentL(3,1)=>-10) && (wInitCurrentL(1,1)=<10) && (wInitCurrentL(2,1)=<10) && (wInitCurrentL(3,1)=<10))
+	wInitCurrentL(1,1) += (-etaE*gradient(wInitCurrentL)(1,1)); 
+	wInitCurrentL(2,1) += (-etaE*gradient(wInitCurrentL)(2,1));
+	wInitCurrentL(3,1) += (-etaE*gradient(wInitCurrentL)(3,1));
+
+	while((calculateChange(wRecentL,wInitCurrentL) > 0) && (wInitCurrentL(1,1)>=-10) && (wInitCurrentL(2,1)>=-10) && (wInitCurrentL(3,1)>=-10) && (wInitCurrentL(1,1)<=10) && (wInitCurrentL(2,1)<=10) && (wInitCurrentL(3,1)<=10))
 	{
 		wRecentL = wInitCurrentL;
 		//w_neu=w_alt+DeltaW
-		wInitCurrentL(1,1) += (-etaE*gradient(1,1)); 
-		wInitCurrentL(2,1) += (-etaE*gradient(2,1));
-		wInitCurrentL(3,1) += (-etaE*gradient(3,1));
+		wInitCurrentL(1,1) += (-etaE*gradient(wInitCurrentL)(1,1)); 
+		wInitCurrentL(2,1) += (-etaE*gradient(wInitCurrentL)(2,1));
+		wInitCurrentL(3,1) += (-etaE*gradient(wInitCurrentL)(3,1));
 		++counterL;
 	}
+	
 	wInitCurrentL = wRecentL;
 	double errorEndL = error(wInitCurrentL);
 
