@@ -9,12 +9,11 @@ class MLP{
 
 public:
 
-	MLP(knn::matrix wE, double xE, unsigned ME);
-	double get(void);
+	MLP(knn::matrix wE, unsigned ME);
+	double get(double xE);
 
 private:
 
-	double x;
 	double y;
 	unsigned M;
 
@@ -24,7 +23,7 @@ private:
 	double fact(double a);
 };
 
-MLP::MLP(knn::matrix wE, double xE, unsigned ME) {
+MLP::MLP(knn::matrix wE, unsigned ME) {
 	w = wE;
 	x = xE;
 	M = ME;
@@ -33,18 +32,18 @@ MLP::MLP(knn::matrix wE, double xE, unsigned ME) {
 
 	//z0 = 1
 	y = w(2,1);
-
-	for(unsigned m=2; m<=M; m++) {
-		z(1,m) = fact(w(1,m)*x);
-		y += w(2,m)*z(1,m);
-	}
 }
 
 double MLP::fact(double a) {
 	return 1.0/(1.0+exp(-1.0*a));
 }
 
-double MLP::get(void) {
+double MLP::get(double xE) {
+	for(unsigned m=2; m<=M; m++) {
+		z(1,m) = fact(w(1,m)*x);
+		y += w(2,m)*z(1,m);
+	}
+	
 	return y;
 }
 
