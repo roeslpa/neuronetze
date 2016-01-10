@@ -19,8 +19,8 @@ int main(int argc, char** argv)
 
 	for(unsigned i=0; i<1000; i++) {
 		x = knn::randomFromInterval(xMin, xMax);
-		MLP mlp = MLP(w, x, M);
-		output41e << x << " " << mlp.get() << "\n";
+		MLP mlp = MLP(w, M);
+		output41e << x << " " << mlp.get(x) << "\n";
 	}
 	output41e.close();
 }
