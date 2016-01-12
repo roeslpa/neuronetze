@@ -13,9 +13,9 @@ int main(int argc, char** argv)
 	double x;
 	ofstream output41e;
 
-	w = knn::matrix(2, M);
+	w = knn::matrix(3, M+1); //darf ich das ändern?
 	w.fillRandom(wMin, wMax);
-	output41e.open("out4.1.e.txt");
+	output41e.open("out4.1.e.txt"); //ist das nicht aufgabe f?
 
 	for(unsigned i=0; i<1000; i++) {
 		x = knn::randomFromInterval(xMin, xMax);
