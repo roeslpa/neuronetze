@@ -60,15 +60,28 @@ int main(int argc, char** argv)
 	}
 	
 	//Aufgabe 4.2 c)
-	//MLP mlp2, mlp10, mlp60;
-
 	MLP mlp2 = trainingslauf(2);
 	MLP mlp10 = trainingslauf(10);
 	MLP mlp60 = trainingslauf(60);
 
+	/*Beispielausgabe:
+	2 1 0.017133
+	10 1 0.00936311
+	60 7 0.00701061
+	Die Laufzeit verlängert sich, wie erwartet mit steigender Komplexität des Netzwerkes (Pardon für die Ungenauigkeit).
+	Die Genauigkeit steigt von M=2 zu M=10 rapide, von M=10 zu M=60 aber nur noch sehr wenig. Dies steht in keinem Verhältnis zur
+	deutlich längeren Laufzeit.
+	*/
+
 	//Aufgabe 4.2 d)
 	printTraining();
 	printFunktion(mlp2, mlp10, mlp60);
+
+	/*
+	Wie im Plot erkennbar ist, sind sowohl die Kurve M=10 als auch M=60 sehr nahe an den Trainingsbeispielen. Zwar besagt die Ausgabe
+	aus 4.2.e, dass der Error bei M=60 geringer ist, man kann aber vermuten, dass die Funktion der Trainingsbeispiele gegen positiv unendlich
+	der Funktion M=10 ähnlicher bleibt.
+	*/
 
 	
 }
@@ -80,6 +93,8 @@ MLP trainingslauf(unsigned m)
 	MLP mlp = MLP(w,M);
 	lernrate=0.01;
 	restfehler = 0;
+	time_t zeit;
+	long anfang = time(&zeit);
 	for (unsigned i=0; i<10000;i++)
 	{
 		// Gradientenabstieg für eine Epoche
@@ -94,7 +109,8 @@ MLP trainingslauf(unsigned m)
 		}
 		restfehler = restfehler/P;
 	}
-
+	cout << M << " " << time(&zeit)-anfang << " " << restfehler << endl;
+	
 	return mlp;
 }
 
