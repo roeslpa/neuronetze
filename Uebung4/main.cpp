@@ -31,7 +31,7 @@ int main(int argc, char** argv)
 	}
 	output41e.close();
 	
-	//Aufgabe 4.2 a)
+	//Aufgabe 4.2 b)
 	//Trainingsbeispiele erzeugen:
 	tP= knn::matrix(1, P);
 	xP= knn::matrix(1,P);
@@ -46,11 +46,31 @@ int main(int argc, char** argv)
 	wMin = -5;
 	wMax = 5;
 	w.fillRandom(wMin, wMax);
+	mlp=MLP(w,M);
 	//Gradientenabstieg für eine Epoche:
 	for (unsigned p=1; p<=P;p++)
 	{
 		mlp.gradientDescent(xP(1,p), tP(1,p), lernrate);
 	}
 	
-	//Aufgabe 4.2 b)
+	//Aufgabe 4.2 c)
+	M = 2;
+	mlp = MLP(w,M);
+	lernrate=0.01;
+	double restfehler = 0;
+	for (unsigned i=0; i<10000;i++)
+	{
+		// Gradientenabstieg für eine Epoche
+		for (unsigned p=1; p<=P;p++)
+		{
+			mlp.gradientDescent(xP(1,p), tP(1,p), lernrate);
+		}	
+		//Restfehlerberechnung
+		for (unsigned p=1;p<=P;p++)
+		{
+			restfehler+= pow(mlp.getY(xP(1,p))-tP(1,p),2);
+		}
+		restfehler = restfehler/P;
+	}
+	
 }

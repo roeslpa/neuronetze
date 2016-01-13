@@ -13,6 +13,7 @@ public:
 	double getY(double xE);
 	void calcError(double xE, double tE); // Für Aufgabe 4.2 a)
 	void gradientDescent(double x, double t, double lernrate); //Für Aufgabe 4.2 a)
+	knn::matrix getW();
 
 private:
 
@@ -87,5 +88,9 @@ void MLP::gradientDescent(double x, double t, double lernrate)
 		w(2,m)+= deltaW(2,m);
 		w(3,m)+= deltaW(3,m);
 	}
+}
+knn::matrix MLP::getW()
+{
+	return w;
 }
 #endif // KNN4_MLP_H
