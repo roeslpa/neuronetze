@@ -29,6 +29,7 @@ private:
 	double fact(double a);
 };
 
+//Aufgabe 4.1 e)
 MLP::MLP(knn::matrix wE, unsigned ME) {
 	w = wE;
 	M = ME;
@@ -42,7 +43,6 @@ double MLP::fact(double a) {
 	return 1.0/(1.0+exp(-1.0*a));
 }
 
-//Aufgabe e)
 double MLP::getY(double xE) {
 	x = xE; //muss das nicht hier hin?
 	//z0 = 1
@@ -84,6 +84,7 @@ void MLP::gradientDescent(double x, double t, double lernrate)
 	//Neue Gewichte berechnen:
 	for (unsigned m=1;m<=M+1;m++)
 	{
+		//w(1)00 und w(1)10 werden zwar uninitialisiert berechnet, aber später auch nicht genutzt => ignoriert
 		w(1,m)+= deltaW(1,m);
 		w(2,m)+= deltaW(2,m);
 		w(3,m)+= deltaW(3,m);
