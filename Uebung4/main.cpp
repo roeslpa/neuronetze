@@ -26,7 +26,7 @@ int main(int argc, char** argv)
 	double x;
 	ofstream output41f;
 
-	//Aufgabe 4.1 f)
+	//Aufgabe 4.1 f) (Da die Daten unsortiert geschrieben werden, müssen sie vor dem Plotten sortiert werden)
 	w = knn::matrix(3, M+1); 
 	w.fillRandom(wMin, wMax);
 	output41f.open("out4.1.f.txt");
