@@ -3,9 +3,18 @@
 
 //Funktionen:
 knn::matrix calcXVector(unsigned int x);
+MIMLP trainingslauf(unsigned M, unsigned D);
 
 // Globale Variblen:
 int D;
+unsigned P;
+double wMin;
+double wMax;
+double trainingsfehler;
+double testfehler;
+double lernrate;
+knn::matrix xP;
+knn::matrix tP;
 
 
 int main(int argc, char** argv)
@@ -13,15 +22,14 @@ int main(int argc, char** argv)
 	//Variablen
 	int D = 9;
 	int M = 2;
-	unsigned P = (int)pow(2, D-1);
-	knn::matrix xP = knn::matrix(1,P);
-	knn::matrix tP = knn::matrix(1,P);
+	P = (int)pow(2, D-1);
+	xP = knn::matrix(1,P);
+	tP = knn::matrix(1,P);
 	unsigned tLatest, xLatest; // Hilfsvariablen um zu wissen wie viele Werte bereits in xP bzw. tP gespeichert sind.
-	double lernrate = 0.01;
-	double wMin = -2;
-	double wMax = 2;
-	double trainingsfehler;
-	double testfehler;
+	lernrate = 0.01;
+	wMin = -2;
+	wMax = 2;
+	
 	
 	
 	// 5.2 b)
@@ -53,15 +61,6 @@ int main(int argc, char** argv)
 	MIMLP mimlp105 = trainingslauf(10, 5);
 	MIMLP mimlp108 = trainingslauf(10, 8);
 	MIMLP mimlp1010 = trainingslauf(10, 10);
-
-	/*Beispielausgabe:
-	2 1 0.017133
-	10 1 0.00936311
-	60 7 0.00701061
-	Die Laufzeit verlängert sich, wie erwartet mit steigender Komplexität des Netzwerkes (Pardon für die Ungenauigkeit).
-	Die Genauigkeit steigt von M=2 zu M=10 rapide, von M=10 zu M=60 aber nur noch sehr wenig. Dies steht in keinem Verhältnis zur
-	deutlich längeren Laufzeit.
-	*/	
 }
 
 //Bit-Vektor aus Eingabewert berechnen (etwas anders als die Formel vom Hilfsblatt, aber dennoch korrekt)

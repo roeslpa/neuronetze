@@ -9,6 +9,7 @@ class MIMLP{
 
 public:
 	MIMLP(knn::matrix w1E, knn::matrix w2E, unsigned ME, unsigned DE);
+	void gradientDescent(knn::matrix xE, double tE, double lernrate); // Berechnung des Gradientenabstiegs
 	double getY(knn::matrix xE);
 private:
 	unsigned M; //Anzahl der verdeckten Neuronen
@@ -20,7 +21,6 @@ private:
 	knn::matrix deltaHid; // 
 	double fact(double a); // Berechnung der fact-Funktion
 	void calcError(knn::matrix xE, double tE); // Berechnung des Fehlers
-	void gradientDescent(knn::matrix xE, double tE, double lernrate); // Berechnung des Gradientenabstiegs
 
 };
 //Aufgabe 5.2 a)
