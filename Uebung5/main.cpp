@@ -48,14 +48,13 @@ int main(int argc, char** argv)
 			xPLatest++;
 			xP(1,xPLatest)=i;
 			//Berechnung fon tP=f(xP)
-			unsigned int sum = 0;
+			tP(1, xPLatest)=1;
 			knn::matrix xd;
 			xd = calcXVector(i);
 			for(unsigned d=2;d<=D+1;d++ )
 			{
-				sum += xd(1,d); // wenn hier sum += xd(1,1) steht geht es. SOnst nicht.
+				tP(1, xPLatest)*= pow(-1, xd(1,d));
 			}
-			tP(1, xPLatest)= pow(-1, sum+1);
 		}
 		else
 		{
@@ -93,7 +92,6 @@ knn::matrix calcXVector(unsigned int x)
 
 MIMLP trainingslauf(unsigned M, unsigned D)
 {
-	char number[] = {'x', 'x', '2', 'x', 'x', '5', 'x', 'x', '8', 'x', '1' };
 	knn::matrix w1 = knn::matrix(D+1,M+1);
 	knn::matrix w2 = knn::matrix(1, M+1);
 	w1.fillRandom(wMin, wMax);
