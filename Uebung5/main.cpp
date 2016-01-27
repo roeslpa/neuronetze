@@ -2,7 +2,7 @@
 #include "MIMLP.h"
 
 //Funktionen:
-knn::matrix* calcXVector(unsigned int x);
+knn::matrix calcXVector(unsigned int x);
 
 // Globale Variblen:
 int D;
@@ -12,7 +12,7 @@ int D;
 int main(int argc, char** argv)
 {
 	//Variablen
-	int D = 9;
+	D = 9;
 	int M = 2;
 	unsigned P = (int)pow(2, D-1);
 	knn::matrix xP = knn::matrix(1,P); // Eingabewerte der Trainingsbeispiele
@@ -35,10 +35,10 @@ int main(int argc, char** argv)
 			//Berechnung fon tP=f(xP)
 			unsigned int sum = 0;
 			knn::matrix xd;
-			xd = *calcXVector(i);
+			xd = calcXVector(i);
 			for(unsigned d=2;d<=D+1;d++ )
 			{
-				sum += xd(1,d); // wenn hier sum += xd(1,1) steht geht es. SOnst nicht.
+				sum = xd(1,d); 
 			}
 			tP(1, xPLatest)= pow(-1, sum+1);
 		}
@@ -56,14 +56,14 @@ int main(int argc, char** argv)
 
 
 //Bit-Vektor aus Eingabewert berechnen (etwas anders als die Formel vom Hilfsblatt, aber dennoch korrekt)
-knn::matrix* calcXVector(unsigned int x)
+knn::matrix calcXVector(unsigned int x)
 {
-	knn::matrix *xd = new knn::matrix(1, D+1);
-	/*
+	knn::matrix xd = knn::matrix(1, D+1);
+	
 	xd(1,1)=1; //x0=1
 	for(unsigned d=2; d<=D+1; d++)
 	{
 		xd(1,d)= ((x&(int)pow(2, d-1))!=0?1:0);
-	}*/
+	}
 	return xd;
 }
