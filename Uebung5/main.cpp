@@ -33,14 +33,13 @@ int main(int argc, char** argv)
 			xPLatest++;
 			xP(1,xPLatest)=i;
 			//Berechnung fon tP=f(xP)
-			unsigned int sum = 0;
+			tP(1, xPLatest)=1;
 			knn::matrix xd;
 			xd = calcXVector(i);
 			for(unsigned d=2;d<=D+1;d++ )
 			{
-				sum = xd(1,d); 
+				tP(1, xPLatest)*= pow(-1, xd(1,d));
 			}
-			tP(1, xPLatest)= pow(-1, sum+1);
 		}
 		else
 		{
