@@ -5,7 +5,8 @@
 
 //Funktionen:
 knn::matrix calcXVector(unsigned int x);
-MIMLP trainingslauf(unsigned M, unsigned D);
+MIMLP trainingslauf(unsigned M, unsigned D, bool printErrors);
+void plot(MIMLP mimlp, ofstream* file);
 
 // Globale Variblen:
 int D;
@@ -24,8 +25,8 @@ knn::matrix tT;
 int main(int argc, char** argv)
 {
 	//Variablen
-	D = 9;
-	int M = 2;
+	D = 10;
+	int M = 10;
 	P = (int)pow(2, D-1);
 	xP = knn::matrix(1,P); // Eingabewerte der Trainingsbeispiele
 	tP = knn::matrix(1,P); // Erwartete Ausgabewerte der Trainingsbeispiele
@@ -72,16 +73,21 @@ int main(int argc, char** argv)
 		}
 	}
 	
+	//
+	MIMLP mimlp22 = trainingslauf(2, 2, 1);
+	MIMLP mimlp25 = trainingslauf(2, 5, 1);
+	MIMLP mimlp28 = trainingslauf(2, 8, 1);
+	MIMLP mimlp210 = trainingslauf(2, 10, 1);
 
-	MIMLP mimlp22 = trainingslauf(2, 2);
-	MIMLP mimlp25 = trainingslauf(2, 5);
-	MIMLP mimlp28 = trainingslauf(2, 8);
-	MIMLP mimlp210 = trainingslauf(2, 10);
+	MIMLP mimlp52 = trainingslauf(5, 2, 0);
+	MIMLP mimlp55 = trainingslauf(5, 5, 0);
+	MIMLP mimlp58 = trainingslauf(5, 8, 0);
+	MIMLP mimlp510 = trainingslauf(5, 10, 0);
 
-	MIMLP mimlp102 = trainingslauf(10, 2);
-	MIMLP mimlp105 = trainingslauf(10, 5);
-	MIMLP mimlp108 = trainingslauf(10, 8);
-	MIMLP mimlp1010 = trainingslauf(10, 10);
+	MIMLP mimlp102 = trainingslauf(10, 2, 1);
+	MIMLP mimlp105 = trainingslauf(10, 5, 1);
+	MIMLP mimlp108 = trainingslauf(10, 8, 1);
+	MIMLP mimlp1010 = trainingslauf(10, 10, 1);
 }
 
 //Bit-Vektor aus Eingabewert berechnen (etwas anders als die Formel vom Hilfsblatt, aber dennoch korrekt)
@@ -98,7 +104,7 @@ knn::matrix calcXVector(unsigned int x)
 }
 
 
-MIMLP trainingslauf(unsigned M, unsigned D)
+MIMLP trainingslauf(unsigned M, unsigned D, bool printErrors)
 {
 	knn::matrix w1 = knn::matrix(D+1,M+1);
 	knn::matrix w2 = knn::matrix(1, M+1);
@@ -108,11 +114,12 @@ MIMLP trainingslauf(unsigned M, unsigned D)
 	trainingsfehler = 0;
 	testfehler = 0;
 	time_t zeit;
-	ofstream file;
-	stringstream filename;
-	filename << "plots/error" << M << "_" << D << ".txt";
-	file.open(filename.str());
-
+	ofstream errors;
+	if(printErrors) {
+		stringstream errorsName;
+		errorsName << "plots/error" << M << "_" << D << ".txt";
+		errors.open(errorsName.str());
+	}
 	long anfang = time(&zeit);
 	for (unsigned i=0; i<10000;i++)
 	{
@@ -135,12 +142,28 @@ MIMLP trainingslauf(unsigned M, unsigned D)
 			testfehler+= pow(mimlp.getY(calcXVector(xT(1,p)))-tT(1,p),2);
 		}
 		testfehler = testfehler/P;
-		file << i << " " << trainingsfehler << " " << testfehler << endl;
+		if(printErrors) {
+			errors << i << " " << trainingsfehler << " " << testfehler << endl;
+		}
 		cout << i << " " << M << " " << D << endl;
 	}
+	ofstream plotFile;
+	stringstream plotName;
+	plotName << "plots/plot_" << M << "_" << D << ".txt";
+	plotFile.open(plotName.str());
+	plot(mimlp, &plotFile);
 	cout << M << " " << D << " " << time(&zeit)-anfang << " " << trainingsfehler << " " << testfehler << endl;
+	if(printErrors) {
+		errors.close();
+	}
 	
-	file.close();
 	
 	return mimlp;
+}
+
+void plot(MIMLP mimlp, ofstream *file) {
+	for(unsigned i=0; i<100; i++) {
+		*file << i << " " << mimlp.getY(calcXVector(i)) << endl;
+	}
+	(*file).close();
 }
