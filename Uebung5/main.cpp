@@ -1,5 +1,7 @@
 #include "matrix.h"
 #include "MIMLP.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 //Funktionen:
 knn::matrix calcXVector(unsigned int x);
@@ -77,6 +79,7 @@ knn::matrix calcXVector(unsigned int x)
 
 MIMLP trainingslauf(unsigned M, unsigned D)
 {
+	char number[] = {'x', 'x', '2', 'x', 'x', '5', 'x', 'x', '8', 'x', '1' };
 	knn::matrix w1 = knn::matrix(D+1,M+1);
 	knn::matrix w2 = knn::matrix(1, M+1);
 	w1.fillRandom(wMin, wMax);
@@ -86,7 +89,9 @@ MIMLP trainingslauf(unsigned M, unsigned D)
 	testfehler = 0;
 	time_t zeit;
 	ofstream file;
-	file.open("plots/error" << M << "_" << D << ".txt");
+	stringstream filename;
+	filename << "plots/error" << M << "_" << D << ".txt";
+	file.open(filename.str());
 
 	long anfang = time(&zeit);
 	for (unsigned i=0; i<10000;i++)
