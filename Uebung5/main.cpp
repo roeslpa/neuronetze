@@ -18,6 +18,7 @@ double lernrate;
 knn::matrix xP;
 knn::matrix tP;
 knn::matrix xT;
+knn::matrix tT;
 
 
 int main(int argc, char** argv)
@@ -29,6 +30,7 @@ int main(int argc, char** argv)
 	xP = knn::matrix(1,P); // Eingabewerte der Trainingsbeispiele
 	tP = knn::matrix(1,P); // Erwartete Ausgabewerte der Trainingsbeispiele
 	xT = knn::matrix(1,P); // Eingabewerte der Testbeispiele
+	tT = knn::matrix(1,P); // Erwartete Ausgabewerte der Testbeispiele
 	unsigned xTLatest, xPLatest; // Hilfsvariablen um zu wissen wie viele Werte bereits in xP bzw. xT gespeichert sind.		
 	lernrate = 0.01;
 	wMin = -2;
@@ -39,8 +41,8 @@ int main(int argc, char** argv)
 	xPLatest = 0;
 	xTLatest = 0;
 	// Mögliche eingabe Werte als ganze Zahl dargestellt gehen von 0 bis 2^D-1
+	knn::matrix xd;
 	for (unsigned int i = 0; i < 2*P;i++)
-
 	{
 		if ((xTLatest>=P)||(((rand()%2)==0) && xPLatest<P)) // Falls xT schon voll ist, oder der Zufallswert 1 modulo 2 entspricht und wird die aktuelle Zahl in xP gespeichert. Andernfalls in xT.
 		{
@@ -49,7 +51,6 @@ int main(int argc, char** argv)
 			xP(1,xPLatest)=i;
 			//Berechnung fon tP=f(xP)
 			tP(1, xPLatest)=1;
-			knn::matrix xd;
 			xd = calcXVector(i);
 			for(unsigned d=2;d<=D+1;d++ )
 			{
@@ -61,6 +62,13 @@ int main(int argc, char** argv)
 			//Testbeispiele
 			xTLatest++;
 			xT(1,xTLatest)=i;
+			//Berechnung fon tP=f(xP)
+			tT(1, xTLatest)=1;
+			xd = calcXVector(i);
+			for(unsigned d=2;d<=D+1;d++ )
+			{
+				tT(1, xTLatest)*= pow(-1, xd(1,d));
+			}
 		}
 	}
 	
@@ -124,7 +132,7 @@ MIMLP trainingslauf(unsigned M, unsigned D)
 		//Testfehlerberechnung
 		for (unsigned p=1;p<=P;p++)
 		{
-			testfehler+= pow(mimlp.getY(calcXVector(yP(1,p)))-sP(1,p),2);
+			testfehler+= pow(mimlp.getY(calcXVector(xT(1,p)))-tT(1,p),2);
 		}
 		testfehler = testfehler/P;
 		file << i << " " << trainingsfehler << " " << testfehler << endl;
@@ -135,3 +143,4 @@ MIMLP trainingslauf(unsigned M, unsigned D)
 	file.close();
 	
 	return mimlp;
+}
