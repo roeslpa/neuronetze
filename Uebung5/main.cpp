@@ -85,6 +85,9 @@ MIMLP trainingslauf(unsigned M, unsigned D)
 	trainingsfehler = 0;
 	testfehler = 0;
 	time_t zeit;
+	ofstream file;
+	file.open("plots/error" << M << "_" << D << ".txt");
+
 	long anfang = time(&zeit);
 	for (unsigned i=0; i<10000;i++)
 	{
@@ -107,8 +110,12 @@ MIMLP trainingslauf(unsigned M, unsigned D)
 			testfehler+= pow(mimlp.getY(calcXVector(yP(1,p)))-sP(1,p),2);
 		}
 		testfehler = testfehler/P;
+		file << i << " " << trainingsfehler << " " << testfehler << endl;
+		cout << i << " " << M << " " << D << endl;
 	}
 	cout << M << " " << D << " " << time(&zeit)-anfang << " " << trainingsfehler << " " << testfehler << endl;
+	
+	file.close();
 	
 	return mimlp;
 }
