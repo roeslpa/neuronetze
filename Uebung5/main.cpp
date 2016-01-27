@@ -17,39 +17,51 @@ double testfehler;
 double lernrate;
 knn::matrix xP;
 knn::matrix tP;
+knn::matrix xT;
 
 
 int main(int argc, char** argv)
 {
 	//Variablen
-	int D = 9;
+	D = 9;
 	int M = 2;
 	P = (int)pow(2, D-1);
-	xP = knn::matrix(1,P);
-	tP = knn::matrix(1,P);
-	unsigned tLatest, xLatest; // Hilfsvariablen um zu wissen wie viele Werte bereits in xP bzw. tP gespeichert sind.
+	xP = knn::matrix(1,P); // Eingabewerte der Trainingsbeispiele
+	tP = knn::matrix(1,P); // Erwartete Ausgabewerte der Trainingsbeispiele
+	xT = knn::matrix(1,P); // Eingabewerte der Testbeispiele
+	unsigned xTLatest, xPLatest; // Hilfsvariablen um zu wissen wie viele Werte bereits in xP bzw. xT gespeichert sind.		
 	lernrate = 0.01;
 	wMin = -2;
 	wMax = 2;
 	
-	
-	
 	// 5.2 b)
 	// Die Test- und Trainingsbeispiele werden als ganze Zahlen gespeichert (dies spart Speicherplatz). Aus diesen kann bei Bedarf mithilfe der Funktion calcXVector der entsprechende Eingabevektor berechnet werden.
-	tLatest = 0;
-	xLatest = 0;
+	xPLatest = 0;
+	xTLatest = 0;
 	// Mögliche eingabe Werte als ganze Zahl dargestellt gehen von 0 bis 2^D-1
 	for (unsigned int i = 0; i < 2*P;i++)
+
 	{
-		if ((tLatest>=P)||(((rand()%2)==0) && xLatest<P)) // Falls xP schon voll ist, oder der Zufallswert 1 modulo 2 entspricht und wird die aktuelle Zahl in tP gespeichert. Andernfalls in xP.
+		if ((xTLatest>=P)||(((rand()%2)==0) && xPLatest<P)) // Falls xT schon voll ist, oder der Zufallswert 1 modulo 2 entspricht und wird die aktuelle Zahl in xP gespeichert. Andernfalls in xT.
 		{
-			xLatest++;
-			xP(1,xLatest)=i;
+			//Trainingsbeispiele
+			xPLatest++;
+			xP(1,xPLatest)=i;
+			//Berechnung fon tP=f(xP)
+			unsigned int sum = 0;
+			knn::matrix xd;
+			xd = calcXVector(i);
+			for(unsigned d=2;d<=D+1;d++ )
+			{
+				sum += xd(1,d); // wenn hier sum += xd(1,1) steht geht es. SOnst nicht.
+			}
+			tP(1, xPLatest)= pow(-1, sum+1);
 		}
 		else
 		{
-			tLatest++;
-			tP(1,tLatest)=i;
+			//Testbeispiele
+			xTLatest++;
+			xT(1,xTLatest)=i;
 		}
 	}
 	
