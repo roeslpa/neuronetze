@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// Daniel Teuchert und Paul Rösler
+
 //Funktionen:
 knn::matrix calcXVector(unsigned int x);
 MIMLP trainingslauf(unsigned M, unsigned D, bool printErrors);
@@ -73,7 +75,7 @@ int main(int argc, char** argv)
 		}
 	}
 	
-	//
+	//5.2.c und d
 	MIMLP mimlp22 = trainingslauf(2, 2, 1);
 	MIMLP mimlp25 = trainingslauf(2, 5, 1);
 	MIMLP mimlp28 = trainingslauf(2, 8, 1);
@@ -88,6 +90,12 @@ int main(int argc, char** argv)
 	MIMLP mimlp105 = trainingslauf(10, 5, 1);
 	MIMLP mimlp108 = trainingslauf(10, 8, 1);
 	MIMLP mimlp1010 = trainingslauf(10, 10, 1);
+
+	/*
+	5.2.d) Es ist zu erkennen, dass die Genauigkeit eher von der Anzahl der verdeckten Neuronen als von den Eingabeneuronen abhängt.
+	Das kann sowohl anhand des Plots aus 5.2.c als auch 5.2.d gesehen werden.
+	Besonders für D=10 kann sich das Netzwerk gut an die Funktion anpassen.
+	*/
 }
 
 //Bit-Vektor aus Eingabewert berechnen (etwas anders als die Formel vom Hilfsblatt, aber dennoch korrekt)
@@ -142,6 +150,7 @@ MIMLP trainingslauf(unsigned M, unsigned D, bool printErrors)
 			testfehler+= pow(mimlp.getY(calcXVector(xT(1,p)))-tT(1,p),2);
 		}
 		testfehler = testfehler/P;
+		//error ausgeben
 		if(printErrors) {
 			errors << i << " " << trainingsfehler << " " << testfehler << endl;
 		}
@@ -161,6 +170,7 @@ MIMLP trainingslauf(unsigned M, unsigned D, bool printErrors)
 	return mimlp;
 }
 
+//5.2.d ausgegeben des Grafen
 void plot(MIMLP mimlp, ofstream *file) {
 	for(unsigned i=0; i<100; i++) {
 		*file << i << " " << mimlp.getY(calcXVector(i)) << endl;
