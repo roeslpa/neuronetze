@@ -173,7 +173,7 @@ MIMLP trainingslauf(unsigned M, unsigned D, bool printErrors)
 //5.2.d ausgegeben des Grafen
 void plot(MIMLP mimlp, ofstream *file) {
 	for(unsigned i=0; i<100; i++) {
-		*file << i << " " << mimlp.getY(calcXVector(i)) << endl;
+		*file << i+100 << " " << mimlp.getY(calcXVector(i+100)) << endl;
 	}
 	(*file).close();
 }
