@@ -81,6 +81,7 @@ int main(int argc, char** argv)
 knn::matrix calcXVector(unsigned int x)
 {
 	knn::matrix xd = knn::matrix(1, D+1);
+	
 	xd(1,1)=1; //x0=1
 	for(unsigned d=2; d<=D+1; d++)
 	{
@@ -88,6 +89,7 @@ knn::matrix calcXVector(unsigned int x)
 	}
 	return xd;
 }
+
 
 MIMLP trainingslauf(unsigned M, unsigned D)
 {
@@ -135,4 +137,3 @@ MIMLP trainingslauf(unsigned M, unsigned D)
 	file.close();
 	
 	return mimlp;
-}
