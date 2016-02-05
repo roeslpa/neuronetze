@@ -62,7 +62,7 @@ double KM::nachbarschaftsfunktion(unsigned r1, unsigned s1, unsigned r2, unsigne
 
 //6.1.d)
 knn::matrix** KM::kohonenLernregel(knn::matrix x) {
-	knn::matrix delta[40][40];
+	knn::matrix** delta;	//=>Ndelta[40][40]
 	knn::matrix bestMatchingNeuron;
 	unsigned bmnR, bmnS;
 	
@@ -71,8 +71,11 @@ knn::matrix** KM::kohonenLernregel(knn::matrix x) {
 	bmnR = (unsigned) bestMatchingNeuron(1,1);
 	bmnS = (unsigned) bestMatchingNeuron(1,2);
 	
+	delta = new knn::matrix*[40];
+
 	//Berechne deltas
 	for(unsigned r=0; r<R; r++) {
+		delta[r] = new knn::matrix[40];
 		for (unsigned s=0; s<S; s++) {
 			delta[r][s] = knn::matrix(1,3);
 			delta[r][s](1,1) = lernrate * nachbarschaftsfunktion(r, s, bmnR, bmnS) * (x(1,1) - z[r][s](1,1));
