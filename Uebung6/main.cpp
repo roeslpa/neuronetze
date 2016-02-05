@@ -1,6 +1,7 @@
 #include "matrix.h"
 #include "KM.h"
-
+// Paul Rösler und Daniel Teuchert
+// Es ist zu beobachten, dass die Zentren der Neuronen mit höhere Iterationenanzahl immer genauer die obere Hälfte eines Torus' formen. 
 int main(int argc, char** argv) {
 	KM kohonenMap1 = KM(true);
 	knn::matrix x;

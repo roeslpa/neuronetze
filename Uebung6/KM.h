@@ -1,6 +1,6 @@
 #ifndef KNN6_KM_H
 #define KNN6_KM_H
-
+// Paul Rösler und Daniel Teuchert
 #include "matrix.h"
 #include <float.h>
 
