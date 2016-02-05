@@ -61,7 +61,7 @@ knn::matrix KM::calcBestMatchingNeuron(knn::matrix x) {
 
 //6.1.c)
 double KM::nachbarschaftsfunktion(unsigned r1, unsigned s1, unsigned r2, unsigned s2) {
-	if(divisorNormal = true) {
+	if(divisorNormal == true) {
 		return exp(-0.5*(pow(r1-r2, 2)+pow(s1-s2, 2)));
 	} else { //Für zweiten Fall in Aufgabe 6.1.f
 		return exp(-0.1*(pow(r1-r2, 2)+pow(s1-s2, 2)));
