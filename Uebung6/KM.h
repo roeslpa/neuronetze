@@ -9,20 +9,23 @@ using namespace std;
 class KM{
 
 public:
-	KM(unsigned RE, unsigned SE);
-	knn::matrix calcBestMatchingNeuron(knn::matrix x);
-	double nachbarschaftsfunktion(unsigned r1, unsigned s1, unsigned r2, unsigned s2);
-	knn::matrix** kohonenLernregel(knn::matrix x);
+	KM(bool divisorNormalE);
+	void kohonenLernregel(knn::matrix x);
 	knn::matrix getRandomX(void);
 private:
-	unsigned R, S;
-	knn::matrix z[40][40];
+	knn::matrix calcBestMatchingNeuron(knn::matrix x);
+	double nachbarschaftsfunktion(unsigned r1, unsigned s1, unsigned r2, unsigned s2);
+	
+	static const unsigned R = 40;
+	static const unsigned S = 40;
+	knn::matrix z[R][S];
 	double lernrate = 0.1;
+	//Für zweiten Fall Aufgabe 6.1.f
+	bool divisorNormal;
 };
 
-KM::KM(unsigned RE, unsigned SE) {
-	R = RE;
-	S = SE;
+KM::KM(bool divisorNormalE) {
+	divisorNormal = divisorNormalE;
 
 	//6.1.a) Initialisieren der Neuronen abhängig von r und s, damit es nicht zufällig ist
 	for(unsigned r=0; r<R; r++) {
@@ -57,12 +60,16 @@ knn::matrix KM::calcBestMatchingNeuron(knn::matrix x) {
 
 //6.1.c)
 double KM::nachbarschaftsfunktion(unsigned r1, unsigned s1, unsigned r2, unsigned s2) {
-	return exp(-0.5*(pow(r1-r2, 2)+pow(s1-s2, 2)));
+	if(divisorNormal = true) {
+		return exp(-0.5*(pow(r1-r2, 2)+pow(s1-s2, 2)));
+	} else { //Für zweiten Fall in Aufgabe 6.1.f
+		return exp(-0.1*(pow(r1-r2, 2)+pow(s1-s2, 2)));
+	}
+	
 }
 
 //6.1.d)
-knn::matrix** KM::kohonenLernregel(knn::matrix x) {
-	knn::matrix** delta;	//=>Ndelta[40][40]
+void KM::kohonenLernregel(knn::matrix x) {
 	knn::matrix bestMatchingNeuron;
 	unsigned bmnR, bmnS;
 	
@@ -70,21 +77,15 @@ knn::matrix** KM::kohonenLernregel(knn::matrix x) {
 	bestMatchingNeuron = calcBestMatchingNeuron(x);
 	bmnR = (unsigned) bestMatchingNeuron(1,1);
 	bmnS = (unsigned) bestMatchingNeuron(1,2);
-	
-	delta = new knn::matrix*[40];
 
-	//Berechne deltas
+	//Berechne deltas und neue Positionen
 	for(unsigned r=0; r<R; r++) {
-		delta[r] = new knn::matrix[40];
 		for (unsigned s=0; s<S; s++) {
-			delta[r][s] = knn::matrix(1,3);
-			delta[r][s](1,1) = lernrate * nachbarschaftsfunktion(r, s, bmnR, bmnS) * (x(1,1) - z[r][s](1,1));
-			delta[r][s](1,2) = lernrate * nachbarschaftsfunktion(r, s, bmnR, bmnS) * (x(1,2) - z[r][s](1,2));
-			delta[r][s](1,3) = lernrate * nachbarschaftsfunktion(r, s, bmnR, bmnS) * (x(1,3) - z[r][s](1,3));
+			z[r][s](1,1) += lernrate * nachbarschaftsfunktion(r, s, bmnR, bmnS) * (x(1,1) - z[r][s](1,1));
+			z[r][s](1,2) += lernrate * nachbarschaftsfunktion(r, s, bmnR, bmnS) * (x(1,2) - z[r][s](1,2));
+			z[r][s](1,3) += lernrate * nachbarschaftsfunktion(r, s, bmnR, bmnS) * (x(1,3) - z[r][s](1,3));
 		}
 	}
-
-	return delta;
 }
 
 //6.1.e)
