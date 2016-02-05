@@ -9,18 +9,23 @@ int main(int argc, char** argv) {
 		x = kohonenMap1.getRandomX();
 		kohonenMap1.kohonenLernregel(x);
 	}
+	
+	kohonenMap1.ausgabe((char*)"NormalerExponent1000Iterationen.txt");
 	for(unsigned i=1000; i<10000; i++) {
 		x = kohonenMap1.getRandomX();
 		kohonenMap1.kohonenLernregel(x);
 	}
+	kohonenMap1.ausgabe((char*)"NormalerExponent10000Iterationen.txt");
 	for(unsigned i=10000; i<100000; i++) {
 		x = kohonenMap1.getRandomX();
 		kohonenMap1.kohonenLernregel(x);
 	}
+	kohonenMap1.ausgabe((char*)"NormalerExponent100000Iterationen.txt");
 	for(unsigned i=100000; i<500000; i++) {
 		x = kohonenMap1.getRandomX();
 		kohonenMap1.kohonenLernregel(x);
 	}
+	kohonenMap1.ausgabe((char*)"NormalerExponent500000Iterationen.txt");
 
 	KM kohonenMap2 = KM(false);
 
@@ -28,16 +33,20 @@ int main(int argc, char** argv) {
 		x = kohonenMap2.getRandomX();
 		kohonenMap2.kohonenLernregel(x);
 	}
+	kohonenMap2.ausgabe((char*)"ModifizierterExponent1000Iterationen.txt");
 	for(unsigned i=1000; i<10000; i++) {
 		x = kohonenMap2.getRandomX();
 		kohonenMap2.kohonenLernregel(x);
 	}
+	kohonenMap2.ausgabe((char*)"ModifizierterExponent10000Iterationen.txt");
 	for(unsigned i=10000; i<100000; i++) {
 		x = kohonenMap2.getRandomX();
 		kohonenMap2.kohonenLernregel(x);
 	}
+	kohonenMap2.ausgabe((char*)"ModifizierterExponent100000Iterationen.txt");
 	for(unsigned i=100000; i<500000; i++) {
 		x = kohonenMap2.getRandomX();
 		kohonenMap2.kohonenLernregel(x);
 	}
+	kohonenMap2.ausgabe((char*)"ModifizierterExponent500000Iterationen.txt");
 }

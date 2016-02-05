@@ -12,6 +12,7 @@ public:
 	KM(bool divisorNormalE);
 	void kohonenLernregel(knn::matrix x);
 	knn::matrix getRandomX(void);
+	void ausgabe(char* dateiname);
 private:
 	knn::matrix calcBestMatchingNeuron(knn::matrix x);
 	double nachbarschaftsfunktion(unsigned r1, unsigned s1, unsigned r2, unsigned s2);
@@ -109,5 +110,18 @@ knn::matrix KM::getRandomX(void) {
 	
 	return x;
 }
+//6.1.f
+void KM::ausgabe(char* dateiname) {
+	ofstream f;
+	f.open(dateiname);
+	for(unsigned r=0; r<R; r++){
+		for(unsigned s=0;s<S;s++){
+			f << z[r][s](1,1) << "\t" << z[r][s](1,2) << "\t" << z[r][s](1,3) << "\n";
+		}
+		f << "\n";
+	} 
+	f.close();
+}
+
 
 #endif // KNN6_KM_H
